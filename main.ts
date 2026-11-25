@@ -7,8 +7,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const scriptDir = dirname(fileURLToPath(import.meta.url));
-const linePath = join(scriptDir, "line.txt");
+const linePath = join(dirname(fileURLToPath(import.meta.url)), "line.txt");
 
 if (!existsSync(linePath)) {
   throw new Error(`line.txt not found next to main.ts: ${linePath}`);
@@ -17,7 +16,7 @@ if (!existsSync(linePath)) {
 const raw = readFileSync(linePath, "utf8");
 const joke = raw.replace(/[\r\n]+$/, "");
 
-if (joke.length < 1 || joke.length > 200) {
+if (!joke.length || joke.length > 200) {
   throw new Error(`joke must be 1-200 characters, got ${joke.length}`);
 }
 if (/[\r\n]/.test(joke)) {
